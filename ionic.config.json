@@ -1,5 +1,7 @@
 {
   "name": "ShareYourWay",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
