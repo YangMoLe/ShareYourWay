@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
+import { AngularFirestore } from 'angularfire2/firestore';
+import 'firebase/firestore';
 
-var database = firebase.database();
 
 function writeUserData(memberID, name, email, imageUrl){
   firebase.database().ref('members/' + memberID).set({
@@ -20,12 +21,17 @@ export class AuthenticateService {
   
 
   registerUser(value) {
+    let db = firebase.firestore();
     return new Promise<any>((resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
+      firebase.auth().createUserWithEmailAndPassword(value.email, value.password).then(cred => {
+        return db.collection('members').doc(cred.user.uid).set({
+          bio: 'example text'
+        })
+      })
         .then(
           res => resolve(res),
           err => reject(err))
-          
+    
           
     })
   }
